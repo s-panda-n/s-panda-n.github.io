@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spandan Patil — CS & Quant Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9f7f4;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #1a4ed8;
+      --accent-light: #e8eeff;
+      --border: #e2ddd8;
+      --card: #ffffff;
+      --tag-bg: #f0ede9;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(249,247,244,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      text-decoration: none; color: var(--text);
+    }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted);
+      font-size: 0.875rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 780px; margin: 0 auto; padding: 0 1.5rem; }
+
+    section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.5rem;
+    }
+
+    h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: 400; }
+
+    /* ── HERO ── */
+    #hero { padding: 5rem 0 4rem; border-bottom: 1px solid var(--border); }
+    #hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.15; margin-bottom: 1.2rem; }
+    #hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-bio {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 560px; margin-bottom: 2rem; line-height: 1.75;
+    }
+    .hero-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1rem; border-radius: 6px;
+      font-size: 0.875rem; font-weight: 500; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+    }
+    .btn-primary:hover { background: #1540b0; }
+    .btn-outline {
+      border: 1px solid var(--border); color: var(--text); background: var(--card);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .about-text { font-size: 0.95rem; line-height: 1.8; color: #333; }
+    .about-text p { margin-bottom: 1rem; }
+    .info-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .info-list li {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      font-size: 0.9rem;
+    }
+    .info-list .label {
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      color: var(--muted); padding-top: 0.15rem; min-width: 80px;
+    }
+    .info-list .val { color: var(--text); }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: flex; flex-direction: column; gap: 1.25rem; }
+    .project-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .project-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 20px rgba(26,78,216,0.07);
+    }
+    .project-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem;
+    }
+    .project-card h3 { font-size: 1.05rem; }
+    .project-card h3 a {
+      text-decoration: none; color: var(--text);
+      transition: color 0.2s;
+    }
+    .project-card h3 a:hover { color: var(--accent); }
+    .project-links { display: flex; gap: 0.5rem; flex-shrink: 0; }
+    .icon-link {
+      font-size: 0.78rem; font-family: 'DM Mono', monospace;
+      text-decoration: none; color: var(--muted);
+      padding: 0.2rem 0.5rem; border: 1px solid var(--border);
+      border-radius: 4px; transition: all 0.2s;
+    }
+    .icon-link:hover { color: var(--accent); border-color: var(--accent); }
+    .project-desc { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.6; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      background: var(--tag-bg); color: #555;
+      padding: 0.2rem 0.55rem; border-radius: 4px;
+    }
+
+    /* ── PUBLICATIONS ── */
+    .pub-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .pub-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem;
+    }
+    .pub-card h3 { font-size: 0.98rem; margin-bottom: 0.3rem; }
+    .pub-meta {
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      color: var(--accent); margin-bottom: 0.5rem;
+    }
+    .pub-authors { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .pub-links { display: flex; gap: 0.5rem; }
+
+    /* ── EXPERIENCE ── */
+    .exp-list { display: flex; flex-direction: column; gap: 0; }
+    .exp-item {
+      display: grid; grid-template-columns: 120px 1fr;
+      gap: 1rem; padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .exp-item:last-child { border-bottom: none; }
+    .exp-date {
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      color: var(--muted); padding-top: 0.2rem;
+    }
+    .exp-content h3 { font-size: 1rem; margin-bottom: 0.15rem; }
+    .exp-company {
+      font-size: 0.85rem; color: var(--accent); margin-bottom: 0.4rem;
+    }
+    .exp-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── SKILLS ── */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+    .skill-group h4 {
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.6rem;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+    /* ── CONTACT ── */
+    #contact { padding-bottom: 5rem; }
+    .contact-intro { font-size: 0.95rem; color: var(--muted); max-width: 480px; margin-bottom: 2rem; line-height: 1.75; }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.8rem; color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.25rem; }
+      nav { padding: 0 1rem; }
+      .nav-links { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-name">Spandan Patil</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section id="hero">
+    <h1>Hi, I'm <em>Spandan Patil</em></h1>
+    <p class="hero-bio">
+      CS grad student at NYU Courant, building at the intersection of
+      machine learning and quantitative finance. Previously at AWS and Micron Technology.
+    </p>
+    <div class="hero-links">
+      <a href="YOUR_RESUME_LINK" class="btn btn-primary" target="_blank">↓ Resume</a>
+      <a href="https://github.com/YOUR_GITHUB" class="btn btn-outline" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/YOUR_LINKEDIN" class="btn btn-outline" target="_blank">LinkedIn</a>
+      <a href="https://leetcode.com/YOUR_LEETCODE" class="btn btn-outline" target="_blank">LeetCode</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">About</p>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm a software engineer and researcher focused on applying machine learning to financial systems.
+          My work spans graph neural networks, production ML infrastructure, and systematic trading strategies.
+        </p>
+        <p>
+          At AWS Bedrock I built scalable ML pipelines serving production workloads. At Micron I worked on
+          data engineering systems on GCP. My published research covers graph networks and deep learning.
+        </p>
+        <p>
+          I'm actively interested in quant research and systematic trading roles, where I can leverage
+          both my engineering depth and my growing expertise in financial modeling.
+        </p>
+      </div>
+      <ul class="info-list">
+        <li>
+          <span class="label">Education</span>
+          <span class="val">MS Computer Science, NYU Courant (May 2026)</span>
+        </li>
+        <li>
+          <span class="label">Focus</span>
+          <span class="val">AI / Machine Learning</span>
+        </li>
+        <li>
+          <span class="label">Location</span>
+          <span class="val">New York, NY</span>
+        </li>
+        <li>
+          <span class="label">Interests</span>
+          <span class="val">Quant Finance, Systematic Trading, ML Systems</span>
+        </li>
+        <li>
+          <span class="label">Status</span>
+          <span class="val">Open to quant research & trading roles</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label">Projects</p>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-header">
+          <h3><a href="#">Portfolio Analyzer</a></h3>
+          <div class="project-links">
+            <a href="#" class="icon-link" target="_blank">GitHub</a>
+            <a href="#" class="icon-link" target="_blank">Demo</a>
+          </div>
+        </div>
+        <p class="project-desc">
+          Investment tracking tool with performance analytics and visualization. Computes risk-adjusted
+          returns, Sharpe ratio, drawdown analysis, and factor exposures across a portfolio of equities.
+        </p>
+        <div class="tag-list">
+          <span class="tag">Python</span>
+          <span class="tag">pandas</span>
+          <span class="tag">plotly</span>
+          <span class="tag">yfinance</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <h3><a href="#">ML Stock Prediction</a></h3>
+          <div class="project-links">
+            <a href="#" class="icon-link" target="_blank">GitHub</a>
+          </div>
+        </div>
+        <p class="project-desc">
+          LSTM-based stock price forecasting with engineered technical indicators. Includes walk-forward
+          validation, feature importance analysis, and comparison against baseline momentum strategies.
+        </p>
+        <div class="tag-list">
+          <span class="tag">Python</span>
+          <span class="tag">PyTorch</span>
+          <span class="tag">LSTM</span>
+          <span class="tag">TA-Lib</span>
+        </div>
+      </div>
+
+      <!-- ADD MORE PROJECTS HERE -->
+
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section id="publications">
+    <p class="section-label">Publications</p>
+    <div class="pub-list">
+
+      <div class="pub-card">
+        <p class="pub-meta">VENUE · YEAR</p>
+        <h3>Title of Your Publication One</h3>
+        <p class="pub-authors">Spandan Patil, Co-Author One, Co-Author Two</p>
+        <div class="pub-links">
+          <a href="#" class="icon-link" target="_blank">Paper</a>
+          <a href="#" class="icon-link" target="_blank">arXiv</a>
+          <a href="#" class="icon-link" target="_blank">Code</a>
+        </div>
+      </div>
+
+      <div class="pub-card">
+        <p class="pub-meta">VENUE · YEAR</p>
+        <h3>Title of Your Publication Two</h3>
+        <p class="pub-authors">Spandan Patil, Co-Author One</p>
+        <div class="pub-links">
+          <a href="#" class="icon-link" target="_blank">Paper</a>
+          <a href="#" class="icon-link" target="_blank">arXiv</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <p class="section-label">Experience</p>
+    <div class="exp-list">
+
+      <div class="exp-item">
+        <span class="exp-date">Jun – Aug 2024</span>
+        <div class="exp-content">
+          <h3>Software Engineering Intern</h3>
+          <p class="exp-company">Amazon Web Services — Bedrock Team</p>
+          <p class="exp-desc">
+            Built and deployed scalable ML pipelines on AWS serverless infrastructure. [Add 1–2 lines
+            of specific impact with metrics, e.g., reduced latency by X%, handled Xk req/sec.]
+          </p>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <span class="exp-date">Previous</span>
+        <div class="exp-content">
+          <h3>Data Engineering Intern</h3>
+          <p class="exp-company">Micron Technology</p>
+          <p class="exp-desc">
+            Worked on data engineering pipelines using GCP BigQuery. [Add specific impact with metrics.]
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <p class="section-label">Skills</p>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h4>Languages</h4>
+        <div class="skill-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Java</span>
+          <span class="tag">C++</span>
+          <span class="tag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>ML / Data</h4>
+        <div class="skill-tags">
+          <span class="tag">PyTorch</span>
+          <span class="tag">scikit-learn</span>
+          <span class="tag">pandas</span>
+          <span class="tag">NumPy</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>Infrastructure</h4>
+        <div class="skill-tags">
+          <span class="tag">AWS</span>
+          <span class="tag">GCP BigQuery</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Git</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>Finance / Quant</h4>
+        <div class="skill-tags">
+          <span class="tag">Portfolio Theory</span>
+          <span class="tag">Derivatives</span>
+          <span class="tag">Backtesting</span>
+          <span class="tag">Time Series</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label">Contact</p>
+    <p class="contact-intro">
+      I'm actively looking for quant research, quant trading, and systematic trading roles
+      starting Summer/Fall 2026. Feel free to reach out — I'm always happy to connect.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:sp@nyu.edu" class="btn btn-primary">sp@nyu.edu</a>
+      <a href="https://github.com/YOUR_GITHUB" class="btn btn-outline" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/YOUR_LINKEDIN" class="btn btn-outline" target="_blank">LinkedIn</a>
+      <a href="https://leetcode.com/YOUR_LEETCODE" class="btn btn-outline" target="_blank">LeetCode</a>
+      <a href="https://scholar.google.com/YOUR_PROFILE" class="btn btn-outline" target="_blank">Google Scholar</a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <span>Spandan Patil</span>
+  <span>Built with HTML/CSS · 2026</span>
+</footer>
+
+</body>
+</html>
