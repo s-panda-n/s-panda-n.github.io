@@ -3,203 +3,769 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spandan Patil — CS & Quant Finance</title>
+  <title>Spandan Patil — Quantitative Systems & Machine Learning</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Cinzel:wght@400;600;700&family=Crimson+Pro:wght@300;400;500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f9f7f4;
-      --text: #1a1a1a;
-      --muted: #6b6b6b;
-      --accent: #1a4ed8;
-      --accent-light: #e8eeff;
-      --border: #e2ddd8;
-      --card: #ffffff;
-      --tag-bg: #f0ede9;
+      --navy: #0A1628;
+      --cream: #F5F0E8;
+      --gold: #D4AF37;
+      --gold-dark: #B8941F;
+      --charcoal: #1A1A1A;
+      --teal: #2C5F5D;
+      --border-gold: rgba(212, 175, 55, 0.3);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      font-family: 'Crimson Pro', serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── GEOMETRIC BACKGROUND PATTERN ── */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: 
+        linear-gradient(30deg, var(--border-gold) 1px, transparent 1px),
+        linear-gradient(-30deg, var(--border-gold) 1px, transparent 1px);
+      background-size: 80px 140px;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
     }
 
     /* ── NAV ── */
     nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(249,247,244,0.92);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: linear-gradient(180deg, var(--navy) 0%, rgba(10, 22, 40, 0.95) 100%);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid var(--gold);
+      padding: 0;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
-      height: 56px;
+      padding: 1.2rem 2rem;
     }
+
     .nav-name {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.1rem;
-      text-decoration: none; color: var(--text);
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem; font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      position: relative;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
     }
-    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+
+    .nav-links {
+      display: flex; gap: 2.5rem;
+      list-style: none;
+    }
+
     .nav-links a {
-      text-decoration: none; color: var(--muted);
-      font-size: 0.875rem; font-weight: 500;
-      transition: color 0.2s;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.85rem; font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s;
     }
-    .nav-links a:hover { color: var(--accent); }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px; left: 50%; transform: translateX(-50%);
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ── DECORATIVE CORNERS ── */
+    .deco-corner {
+      position: absolute;
+      width: 60px; height: 60px;
+      pointer-events: none;
+    }
+
+    .deco-corner::before,
+    .deco-corner::after {
+      content: '';
+      position: absolute;
+      background: var(--gold);
+    }
+
+    .deco-corner.top-left {
+      top: 0; left: 0;
+    }
+    .deco-corner.top-left::before {
+      top: 0; left: 0; width: 2px; height: 60px;
+    }
+    .deco-corner.top-left::after {
+      top: 0; left: 0; width: 60px; height: 2px;
+    }
+
+    .deco-corner.top-right {
+      top: 0; right: 0;
+    }
+    .deco-corner.top-right::before {
+      top: 0; right: 0; width: 2px; height: 60px;
+    }
+    .deco-corner.top-right::after {
+      top: 0; right: 0; width: 60px; height: 2px;
+    }
 
     /* ── LAYOUT ── */
-    .container { max-width: 780px; margin: 0 auto; padding: 0 1.5rem; }
-
-    section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
-    section:last-child { border-bottom: none; }
-
-    .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 1.5rem;
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
     }
 
-    h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: 400; }
+    section {
+      padding: 6rem 0;
+      position: relative;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    section:nth-child(1) { animation-delay: 0.1s; }
+    section:nth-child(2) { animation-delay: 0.2s; }
+    section:nth-child(3) { animation-delay: 0.3s; }
+    section:nth-child(4) { animation-delay: 0.4s; }
+    section:nth-child(5) { animation-delay: 0.5s; }
+
+    .divider {
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent 0%,
+        var(--gold) 20%,
+        var(--gold) 80%,
+        transparent 100%
+      );
+      margin: 3rem 0;
+      position: relative;
+    }
+
+    .divider::before {
+      content: '◆';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--cream);
+      color: var(--gold);
+      padding: 0 1rem;
+      font-size: 0.8rem;
+    }
+
+    /* ── SECTION LABELS ── */
+    .section-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-gold);
+    }
+
+    .section-label::before {
+      max-width: 60px;
+    }
 
     /* ── HERO ── */
-    #hero { padding: 5rem 0 4rem; border-bottom: 1px solid var(--border); }
-    #hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.15; margin-bottom: 1.2rem; }
-    #hero h1 em { font-style: italic; color: var(--accent); }
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: 100px;
+      position: relative;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: 100px; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--gold-dark) 0%, transparent 70%);
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-subtitle {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeIn 1s ease-out 0.5s forwards;
+    }
+
+    #hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 6rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      color: var(--navy);
+      opacity: 0;
+      animation: fadeInUp 1s ease-out 0.7s forwards;
+    }
+
+    #hero h1 strong {
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
     .hero-bio {
-      font-size: 1.05rem; color: var(--muted);
-      max-width: 560px; margin-bottom: 2rem; line-height: 1.75;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      max-width: 650px;
+      color: var(--charcoal);
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeInUp 1s ease-out 0.9s forwards;
     }
-    .hero-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeInUp 1s ease-out 1.1s forwards;
+    }
+
     .btn {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      padding: 0.5rem 1rem; border-radius: 6px;
-      font-size: 0.875rem; font-weight: 500; text-decoration: none;
-      transition: all 0.2s;
+      font-family: 'Courier Prime', monospace;
+      padding: 1rem 2.5rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      border: 2px solid;
     }
+
     .btn-primary {
-      background: var(--accent); color: #fff;
+      background: var(--navy);
+      color: var(--gold);
+      border-color: var(--gold);
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
     }
-    .btn-primary:hover { background: #1540b0; }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: var(--gold);
+      transform: translate(-50%, -50%);
+      transition: all 0.5s;
+      z-index: 0;
+    }
+
+    .btn-primary:hover::before {
+      width: 100%; height: 100%;
+    }
+
+    .btn-primary:hover {
+      color: var(--navy);
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
+    }
+
+    .btn-primary span {
+      position: relative;
+      z-index: 1;
+    }
+
     .btn-outline {
-      border: 1px solid var(--border); color: var(--text); background: var(--card);
+      background: transparent;
+      color: var(--navy);
+      border-color: var(--navy);
     }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-outline:hover {
+      background: var(--navy);
+      color: var(--cream);
+      border-color: var(--gold);
+    }
 
     /* ── ABOUT ── */
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
-    .about-text { font-size: 0.95rem; line-height: 1.8; color: #333; }
-    .about-text p { margin-bottom: 1rem; }
-    .info-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: var(--charcoal);
+    }
+
+    .about-text p {
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text p:first-letter {
+      font-size: 3.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      float: left;
+      line-height: 0.8;
+      margin: 0.1rem 0.5rem 0 0;
+      color: var(--gold);
+    }
+
+    .info-panel {
+      background: var(--navy);
+      padding: 2.5rem;
+      position: relative;
+      border: 2px solid var(--gold);
+      box-shadow: 0 10px 40px rgba(10, 22, 40, 0.3);
+    }
+
+    .info-panel::before {
+      content: '';
+      position: absolute;
+      top: -10px; right: -10px;
+      width: 100%; height: 100%;
+      border: 2px solid var(--border-gold);
+      z-index: -1;
+    }
+
+    .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
     .info-list li {
-      display: flex; align-items: flex-start; gap: 0.6rem;
-      font-size: 0.9rem;
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
-    .info-list .label {
-      font-family: 'DM Mono', monospace; font-size: 0.72rem;
-      color: var(--muted); padding-top: 0.15rem; min-width: 80px;
+
+    .info-list li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
     }
-    .info-list .val { color: var(--text); }
+
+    .info-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .info-value {
+      font-size: 0.95rem;
+      color: var(--cream);
+      line-height: 1.6;
+    }
 
     /* ── PROJECTS ── */
-    .projects-grid { display: flex; flex-direction: column; gap: 1.25rem; }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+    }
+
     .project-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1.5rem;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      background: white;
+      padding: 2.5rem;
+      position: relative;
+      border: 1px solid var(--border-gold);
+      transition: all 0.4s;
+      overflow: hidden;
     }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 4px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-dark) 100%);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+
+    .project-card:hover::before {
+      transform: scaleX(1);
+    }
+
     .project-card:hover {
-      border-color: var(--accent);
-      box-shadow: 0 4px 20px rgba(26,78,216,0.07);
+      box-shadow: 0 15px 50px rgba(10, 22, 40, 0.15);
+      transform: translateY(-5px);
     }
-    .project-header {
-      display: flex; align-items: flex-start;
-      justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem;
+
+    .project-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 300;
+      color: var(--border-gold);
+      position: absolute;
+      top: 1rem; right: 1.5rem;
+      line-height: 1;
     }
-    .project-card h3 { font-size: 1.05rem; }
-    .project-card h3 a {
-      text-decoration: none; color: var(--text);
-      transition: color 0.2s;
+
+    .project-card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 1rem;
     }
-    .project-card h3 a:hover { color: var(--accent); }
-    .project-links { display: flex; gap: 0.5rem; flex-shrink: 0; }
-    .icon-link {
-      font-size: 0.78rem; font-family: 'DM Mono', monospace;
-      text-decoration: none; color: var(--muted);
-      padding: 0.2rem 0.5rem; border: 1px solid var(--border);
-      border-radius: 4px; transition: all 0.2s;
+
+    .project-desc {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--charcoal);
+      margin-bottom: 1.5rem;
     }
-    .icon-link:hover { color: var(--accent); border-color: var(--accent); }
-    .project-desc { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.6; }
-    .tag-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    .project-links {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-link {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--gold);
+      transition: all 0.3s;
+    }
+
+    .project-link:hover {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
     .tag {
-      font-family: 'DM Mono', monospace; font-size: 0.7rem;
-      background: var(--tag-bg); color: #555;
-      padding: 0.2rem 0.55rem; border-radius: 4px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.8rem;
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--gold-dark);
+      border: 1px solid var(--border-gold);
     }
 
     /* ── PUBLICATIONS ── */
-    .pub-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .pub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
     .pub-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1.5rem;
+      background: linear-gradient(135deg, var(--navy) 0%, #1B2838 100%);
+      padding: 2.5rem;
+      position: relative;
+      border-left: 4px solid var(--gold);
+      transition: all 0.3s;
     }
-    .pub-card h3 { font-size: 0.98rem; margin-bottom: 0.3rem; }
+
+    .pub-card::before {
+      content: '"';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 8rem;
+      font-weight: 700;
+      color: rgba(212, 175, 55, 0.1);
+      position: absolute;
+      top: -1rem; right: 2rem;
+      line-height: 1;
+    }
+
+    .pub-card:hover {
+      border-left-width: 8px;
+      box-shadow: 0 10px 40px rgba(10, 22, 40, 0.3);
+    }
+
     .pub-meta {
-      font-family: 'DM Mono', monospace; font-size: 0.72rem;
-      color: var(--accent); margin-bottom: 0.5rem;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
     }
-    .pub-authors { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.75rem; }
-    .pub-links { display: flex; gap: 0.5rem; }
+
+    .pub-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .pub-authors {
+      font-size: 0.9rem;
+      color: rgba(245, 240, 232, 0.7);
+      margin-bottom: 1.5rem;
+    }
+
+    .pub-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .pub-link {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--gold);
+      transition: all 0.3s;
+    }
+
+    .pub-link:hover {
+      background: var(--gold);
+      color: var(--navy);
+    }
 
     /* ── EXPERIENCE ── */
-    .exp-list { display: flex; flex-direction: column; gap: 0; }
-    .exp-item {
-      display: grid; grid-template-columns: 120px 1fr;
-      gap: 1rem; padding: 1.25rem 0;
-      border-bottom: 1px solid var(--border);
+    .exp-timeline {
+      position: relative;
+      padding-left: 3rem;
     }
-    .exp-item:last-child { border-bottom: none; }
-    .exp-date {
-      font-family: 'DM Mono', monospace; font-size: 0.72rem;
-      color: var(--muted); padding-top: 0.2rem;
-    }
-    .exp-content h3 { font-size: 1rem; margin-bottom: 0.15rem; }
-    .exp-company {
-      font-size: 0.85rem; color: var(--accent); margin-bottom: 0.4rem;
-    }
-    .exp-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
 
-    /* ── SKILLS ── */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
-    .skill-group h4 {
-      font-family: 'DM Mono', monospace; font-size: 0.72rem;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 0.6rem;
+    .exp-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--gold) 0%, var(--border-gold) 100%);
     }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+    .exp-item {
+      position: relative;
+      padding-bottom: 3rem;
+    }
+
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: -3.5rem; top: 0.5rem;
+      width: 12px; height: 12px;
+      background: var(--gold);
+      border: 3px solid var(--cream);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px var(--navy);
+    }
+
+    .exp-date {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .exp-item h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.3rem;
+    }
+
+    .exp-company {
+      font-size: 1rem;
+      color: var(--teal);
+      margin-bottom: 1rem;
+    }
+
+    .exp-desc {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--charcoal);
+    }
 
     /* ── CONTACT ── */
-    #contact { padding-bottom: 5rem; }
-    .contact-intro { font-size: 0.95rem; color: var(--muted); max-width: 480px; margin-bottom: 2rem; line-height: 1.75; }
-    .contact-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    #contact {
+      background: linear-gradient(135deg, var(--navy) 0%, #1B2838 100%);
+      padding: 5rem 2rem;
+      margin: 6rem -2rem 0;
+      position: relative;
+    }
+
+    #contact::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 200px; height: 2px;
+      background: var(--gold);
+    }
+
+    .contact-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-content .section-label {
+      justify-content: center;
+      color: var(--gold);
+    }
+
+    .contact-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      color: var(--cream);
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-title strong {
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .contact-text {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(245, 240, 232, 0.8);
+      margin-bottom: 3rem;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
 
     /* ── FOOTER ── */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 1.5rem;
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 0.8rem; color: var(--muted);
+      background: var(--navy);
+      padding: 2rem;
+      text-align: center;
+      border-top: 2px solid var(--gold);
     }
 
-    @media (max-width: 600px) {
-      .about-grid { grid-template-columns: 1fr; }
-      .exp-item { grid-template-columns: 1fr; gap: 0.25rem; }
-      nav { padding: 0 1rem; }
-      .nav-links { gap: 1rem; }
+    .footer-text {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-inner {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-links {
+        gap: 1.5rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #hero h1 {
+        font-size: 3rem;
+      }
+
+      .exp-timeline {
+        padding-left: 2rem;
+      }
     }
   </style>
 </head>
@@ -207,32 +773,39 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-name">Spandan Patil</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#publications">Publications</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <div class="nav-inner">
+    <a href="#" class="nav-name">Spandan Patil</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
 </nav>
 
 <div class="container">
 
   <!-- HERO -->
   <section id="hero">
-    <h1>Hi, I'm <em>Spandan Patil</em></h1>
-    <p class="hero-bio">
-      CS grad student at NYU Courant, building at the intersection of
-      machine learning and quantitative finance. Previously at AWS and Micron Technology.
-    </p>
-    <div class="hero-links">
-      <a href="YOUR_RESUME_LINK" class="btn btn-primary" target="_blank">↓ Resume</a>
-      <a href="https://github.com/YOUR_GITHUB" class="btn btn-outline" target="_blank">GitHub</a>
-      <a href="https://linkedin.com/in/YOUR_LINKEDIN" class="btn btn-outline" target="_blank">LinkedIn</a>
-      <a href="https://leetcode.com/YOUR_LEETCODE" class="btn btn-outline" target="_blank">LeetCode</a>
+    <div class="hero-content">
+      <p class="hero-subtitle">Quantitative Systems · Machine Learning · Finance</p>
+      <h1>Building the future of<br/><strong>algorithmic intelligence</strong></h1>
+      <p class="hero-bio">
+        CS graduate student at NYU Courant, architecting machine learning systems 
+        at the intersection of quantitative finance and systematic trading. 
+        Previously at AWS Bedrock and Micron Technology.
+      </p>
+      <div class="hero-cta">
+        <a href="YOUR_RESUME_LINK" class="btn btn-primary"><span>↓ Resume</span></a>
+        <a href="https://github.com/YOUR_GITHUB" class="btn btn-outline" target="_blank">GitHub</a>
+        <a href="https://linkedin.com/in/YOUR_LINKEDIN" class="btn btn-outline" target="_blank">LinkedIn</a>
+      </div>
     </div>
   </section>
+
+  <div class="divider"></div>
 
   <!-- ABOUT -->
   <section id="about">
@@ -240,91 +813,101 @@
     <div class="about-grid">
       <div class="about-text">
         <p>
-          I'm a software engineer and researcher focused on applying machine learning to financial systems.
-          My work spans graph neural networks, production ML infrastructure, and systematic trading strategies.
+          I build intelligent systems that operate at the intersection of machine learning 
+          and quantitative finance. My work spans graph neural networks for predictive modeling, 
+          production-scale ML infrastructure, and systematic trading strategies.
         </p>
         <p>
-          At AWS Bedrock I built scalable ML pipelines serving production workloads. At Micron I worked on
-          data engineering systems on GCP. My published research covers graph networks and deep learning.
+          At AWS Bedrock, I engineered scalable ML pipelines serving enterprise workloads. 
+          At Micron Technology, I architected data systems processing terabytes on GCP. 
+          My research in graph networks and multimodal learning has been published in 
+          peer-reviewed conferences.
         </p>
         <p>
-          I'm actively interested in quant research and systematic trading roles, where I can leverage
-          both my engineering depth and my growing expertise in financial modeling.
+          I'm drawn to problems where rigorous quantitative analysis meets sophisticated 
+          engineering—quant research, systematic trading, and ML systems that require both 
+          theoretical depth and production excellence.
         </p>
       </div>
-      <ul class="info-list">
-        <li>
-          <span class="label">Education</span>
-          <span class="val">MS Computer Science, NYU Courant (May 2026)</span>
-        </li>
-        <li>
-          <span class="label">Focus</span>
-          <span class="val">AI / Machine Learning</span>
-        </li>
-        <li>
-          <span class="label">Location</span>
-          <span class="val">New York, NY</span>
-        </li>
-        <li>
-          <span class="label">Interests</span>
-          <span class="val">Quant Finance, Systematic Trading, ML Systems</span>
-        </li>
-        <li>
-          <span class="label">Status</span>
-          <span class="val">Open to quant research & trading roles</span>
-        </li>
-      </ul>
+      <div class="info-panel">
+        <ul class="info-list">
+          <li>
+            <span class="info-label">Education</span>
+            <span class="info-value">MS Computer Science<br/>NYU Courant, May 2026</span>
+          </li>
+          <li>
+            <span class="info-label">Focus</span>
+            <span class="info-value">AI / Machine Learning<br/>Quantitative Finance</span>
+          </li>
+          <li>
+            <span class="info-label">Location</span>
+            <span class="info-value">New York, NY</span>
+          </li>
+          <li>
+            <span class="info-label">Interests</span>
+            <span class="info-value">Systematic Trading<br/>Graph Neural Networks<br/>ML Infrastructure</span>
+          </li>
+          <li>
+            <span class="info-label">Status</span>
+            <span class="info-value">Seeking quant research & trading roles</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 
+  <div class="divider"></div>
+
   <!-- PROJECTS -->
   <section id="projects">
-    <p class="section-label">Projects</p>
+    <p class="section-label">Selected Projects</p>
     <div class="projects-grid">
 
       <div class="project-card">
-        <div class="project-header">
-          <h3><a href="#">Portfolio Analyzer</a></h3>
-          <div class="project-links">
-            <a href="#" class="icon-link" target="_blank">GitHub</a>
-            <a href="#" class="icon-link" target="_blank">Demo</a>
-          </div>
-        </div>
+        <span class="project-number">01</span>
+        <h3>Portfolio Analyzer</h3>
         <p class="project-desc">
-          Investment tracking tool with performance analytics and visualization. Computes risk-adjusted
-          returns, Sharpe ratio, drawdown analysis, and factor exposures across a portfolio of equities.
+          Investment tracking system with advanced performance analytics. 
+          Computes risk-adjusted returns, Sharpe ratio, maximum drawdown, 
+          and multi-factor exposure analysis across equity portfolios.
         </p>
+        <div class="project-links">
+          <a href="#" class="project-link">GitHub</a>
+          <a href="#" class="project-link">Demo</a>
+        </div>
         <div class="tag-list">
           <span class="tag">Python</span>
           <span class="tag">pandas</span>
-          <span class="tag">plotly</span>
+          <span class="tag">Plotly</span>
           <span class="tag">yfinance</span>
         </div>
       </div>
 
       <div class="project-card">
-        <div class="project-header">
-          <h3><a href="#">ML Stock Prediction</a></h3>
-          <div class="project-links">
-            <a href="#" class="icon-link" target="_blank">GitHub</a>
-          </div>
-        </div>
+        <span class="project-number">02</span>
+        <h3>LSTM Stock Forecasting</h3>
         <p class="project-desc">
-          LSTM-based stock price forecasting with engineered technical indicators. Includes walk-forward
-          validation, feature importance analysis, and comparison against baseline momentum strategies.
+          Time-series prediction model with technical indicator engineering. 
+          Walk-forward validation, feature importance analysis, and backtesting 
+          against baseline momentum strategies.
         </p>
+        <div class="project-links">
+          <a href="#" class="project-link">GitHub</a>
+        </div>
         <div class="tag-list">
-          <span class="tag">Python</span>
           <span class="tag">PyTorch</span>
           <span class="tag">LSTM</span>
           <span class="tag">TA-Lib</span>
+          <span class="tag">NumPy</span>
         </div>
       </div>
 
-      <!-- ADD MORE PROJECTS HERE -->
+      <!-- ADD MORE PROJECTS -->
 
     </div>
   </section>
+
+  <div class="divider"></div>
 
   <!-- PUBLICATIONS -->
   <section id="publications">
@@ -336,9 +919,9 @@
         <h3>Title of Your Publication One</h3>
         <p class="pub-authors">Spandan Patil, Co-Author One, Co-Author Two</p>
         <div class="pub-links">
-          <a href="#" class="icon-link" target="_blank">Paper</a>
-          <a href="#" class="icon-link" target="_blank">arXiv</a>
-          <a href="#" class="icon-link" target="_blank">Code</a>
+          <a href="#" class="pub-link">Paper</a>
+          <a href="#" class="pub-link">arXiv</a>
+          <a href="#" class="pub-link">Code</a>
         </div>
       </div>
 
@@ -347,109 +930,68 @@
         <h3>Title of Your Publication Two</h3>
         <p class="pub-authors">Spandan Patil, Co-Author One</p>
         <div class="pub-links">
-          <a href="#" class="icon-link" target="_blank">Paper</a>
-          <a href="#" class="icon-link" target="_blank">arXiv</a>
+          <a href="#" class="pub-link">Paper</a>
+          <a href="#" class="pub-link">arXiv</a>
         </div>
       </div>
 
     </div>
   </section>
+
+  <div class="divider"></div>
 
   <!-- EXPERIENCE -->
   <section id="experience">
     <p class="section-label">Experience</p>
-    <div class="exp-list">
+    <div class="exp-timeline">
 
       <div class="exp-item">
-        <span class="exp-date">Jun – Aug 2024</span>
-        <div class="exp-content">
-          <h3>Software Engineering Intern</h3>
-          <p class="exp-company">Amazon Web Services — Bedrock Team</p>
-          <p class="exp-desc">
-            Built and deployed scalable ML pipelines on AWS serverless infrastructure. [Add 1–2 lines
-            of specific impact with metrics, e.g., reduced latency by X%, handled Xk req/sec.]
-          </p>
-        </div>
+        <p class="exp-date">Jun – Aug 2024</p>
+        <h3>Software Engineering Intern</h3>
+        <p class="exp-company">Amazon Web Services — Bedrock Team</p>
+        <p class="exp-desc">
+          Architected and deployed production ML pipelines on AWS Lambda and Step Functions. 
+          [Add metrics: reduced latency by X%, processed Xk requests/day, improved throughput by X%]
+        </p>
       </div>
 
       <div class="exp-item">
-        <span class="exp-date">Previous</span>
-        <div class="exp-content">
-          <h3>Data Engineering Intern</h3>
-          <p class="exp-company">Micron Technology</p>
-          <p class="exp-desc">
-            Worked on data engineering pipelines using GCP BigQuery. [Add specific impact with metrics.]
-          </p>
-        </div>
+        <p class="exp-date">Previous</p>
+        <h3>Data Engineering Intern</h3>
+        <p class="exp-company">Micron Technology</p>
+        <p class="exp-desc">
+          Built data engineering pipelines on GCP with BigQuery and Dataflow. 
+          [Add metrics: processed X TB/day, reduced query time by X%, automated X workflows]
+        </p>
       </div>
 
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <p class="section-label">Skills</p>
-    <div class="skills-grid">
-      <div class="skill-group">
-        <h4>Languages</h4>
-        <div class="skill-tags">
-          <span class="tag">Python</span>
-          <span class="tag">Java</span>
-          <span class="tag">C++</span>
-          <span class="tag">SQL</span>
-        </div>
-      </div>
-      <div class="skill-group">
-        <h4>ML / Data</h4>
-        <div class="skill-tags">
-          <span class="tag">PyTorch</span>
-          <span class="tag">scikit-learn</span>
-          <span class="tag">pandas</span>
-          <span class="tag">NumPy</span>
-        </div>
-      </div>
-      <div class="skill-group">
-        <h4>Infrastructure</h4>
-        <div class="skill-tags">
-          <span class="tag">AWS</span>
-          <span class="tag">GCP BigQuery</span>
-          <span class="tag">Docker</span>
-          <span class="tag">Git</span>
-        </div>
-      </div>
-      <div class="skill-group">
-        <h4>Finance / Quant</h4>
-        <div class="skill-tags">
-          <span class="tag">Portfolio Theory</span>
-          <span class="tag">Derivatives</span>
-          <span class="tag">Backtesting</span>
-          <span class="tag">Time Series</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <p class="section-label">Contact</p>
-    <p class="contact-intro">
-      I'm actively looking for quant research, quant trading, and systematic trading roles
-      starting Summer/Fall 2026. Feel free to reach out — I'm always happy to connect.
-    </p>
-    <div class="contact-links">
-      <a href="mailto:sp@nyu.edu" class="btn btn-primary">sp@nyu.edu</a>
-      <a href="https://github.com/YOUR_GITHUB" class="btn btn-outline" target="_blank">GitHub</a>
-      <a href="https://linkedin.com/in/YOUR_LINKEDIN" class="btn btn-outline" target="_blank">LinkedIn</a>
-      <a href="https://leetcode.com/YOUR_LEETCODE" class="btn btn-outline" target="_blank">LeetCode</a>
-      <a href="https://scholar.google.com/YOUR_PROFILE" class="btn btn-outline" target="_blank">Google Scholar</a>
     </div>
   </section>
 
 </div>
 
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-content">
+    <p class="section-label">Get In Touch</p>
+    <h2 class="contact-title">Let's build something <strong>exceptional</strong></h2>
+    <p class="contact-text">
+      Actively seeking quant research, systematic trading, and quantitative 
+      development roles starting Summer/Fall 2026. Open to conversations about 
+      challenging problems at the intersection of finance and technology.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:sp@nyu.edu" class="btn btn-primary"><span>sp@nyu.edu</span></a>
+      <a href="https://github.com/YOUR_GITHUB" class="btn btn-outline" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/YOUR_LINKEDIN" class="btn btn-outline" target="_blank">LinkedIn</a>
+      <a href="https://leetcode.com/YOUR_LEETCODE" class="btn btn-outline" target="_blank">LeetCode</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  <span>Spandan Patil</span>
-  <span>Built with HTML/CSS · 2026</span>
+  <p class="footer-text">Spandan Patil · 2026</p>
 </footer>
 
 </body>
