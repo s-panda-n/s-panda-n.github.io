@@ -497,7 +497,7 @@ body[data-curve="false"] .cell { transform: none !important; }
   letter-spacing: var(--tr-mono-xl); text-transform: uppercase;
   color: var(--ink-3); z-index: 5;
 }
-.mr-row { display: flex; gap: 18px; min-width: 200px; justify-content: space-between; }
+.mr-row { display: flex; gap: 28px; min-width: 280px; justify-content: space-between; white-space: nowrap; }
 .mr-row span:first-child { color: var(--ink-4); }
 .mr-row .signal { color: var(--signal); }
 .hud-ticks {
@@ -621,4 +621,206 @@ body[data-curve="false"] .cell { transform: none !important; }
   .stars::before, .stars::after, .stars-mid, .stars-extra { animation: none !important; }
   .art-orb::before, .art-flame::before, .art-mesh::before, .art-rings::after,
   .f1-car, .f1-lines, .stocks-line, .dna-rotate, .gnn-edge, .gnn-node, .social-bridge, .social-bad, .earth::before { animation: none !important; }
+}
+
+
+/* ── COSMIC RIPPLE (click) ─────────────────────────── */
+.cosmic-ripple {
+  position: fixed; pointer-events: none; z-index: 50;
+  width: 8px; height: 8px; border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(108,231,201,.9) 0%, rgba(108,231,201,.3) 30%, transparent 70%);
+  animation: rippleOut 1s ease-out forwards;
+  mix-blend-mode: screen;
+}
+@keyframes rippleOut {
+  0%   { width: 8px; height: 8px; opacity: 1; }
+  100% { width: 280px; height: 280px; opacity: 0; }
+}
+
+/* Mouse-reactive star drift — overrides static animation transforms */
+.stars-mid { transform: translate(calc(var(--mx, 0) * 28px), calc(var(--my, 0) * 18px)); transition: transform .4s ease-out; }
+.stars::after { transform: translate(calc(var(--mx, 0) * -22px), calc(var(--my, 0) * -14px)) !important; transition: transform .4s ease-out; }
+.vignette { transform: translate(calc(var(--mx, 0) * -10px), calc(var(--my, 0) * -10px)); transition: transform .35s ease-out; }
+
+/* ── COCKPIT FRAME (Falcon silhouette overlay) ─────── */
+.cockpit-frame {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 8;
+  opacity: 0;
+  transition: opacity .6s var(--ease);
+}
+.cockpit-frame.on { opacity: 1; }
+
+/* The dark vignette/silhouette — pure CSS using radial mask of cockpit window shape */
+.cockpit-frame::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 55%, transparent 50%, rgba(5,6,10,.85) 78%, var(--void) 100%);
+}
+/* dashboard silhouette at bottom — like falcon controls */
+.cockpit-frame::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 22vh;
+  background:
+    radial-gradient(ellipse 30% 60% at 18% 100%, #0d1422 0%, transparent 55%),
+    radial-gradient(ellipse 30% 60% at 82% 100%, #0d1422 0%, transparent 55%),
+    linear-gradient(180deg, transparent 0%, #050a14 70%, #03060c 100%);
+  border-top: 1px solid rgba(58, 66, 88, .5);
+}
+
+/* Side struts — Falcon's geometric frames */
+.cf-falcon { position: absolute; inset: 0; pointer-events: none; }
+.cf-falcon::before, .cf-falcon::after {
+  content: ''; position: absolute; top: 0; bottom: 22vh; width: 14vw;
+  background:
+    linear-gradient(90deg, var(--void) 0%, rgba(15,20,32,.85) 60%, transparent 100%);
+  border-right: 1px solid rgba(58, 66, 88, .35);
+}
+.cf-falcon::before { left: 0; }
+.cf-falcon::after  { right: 0; transform: scaleX(-1); }
+
+/* Top arch — curved cockpit roof */
+.cockpit-frame .cf-warp {
+  position: absolute; top: 0; left: 0; right: 0; height: 18vh;
+  background: linear-gradient(180deg, var(--void) 0%, rgba(15,20,32,.85) 50%, transparent 100%);
+  border-bottom: 1px solid rgba(58, 66, 88, .3);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+}
+
+/* HYPER mode — warping star streaks */
+.cockpit-frame.hyper .cf-warp {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%,
+      rgba(108,231,201,.18) 0%, transparent 60%),
+    linear-gradient(180deg, var(--void) 0%, rgba(15,20,32,.85) 50%, transparent 100%);
+}
+
+/* DSRPT page — full Falcon view active */
+body[data-page="dsrpt"] .cockpit-frame { opacity: 1; }
+
+/* ── HYPERSPACE WARP STREAKS (ambient on dsrpt + during transition) ─ */
+.warp-field {
+  position: fixed; inset: 0; pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+  opacity: 0; transition: opacity .5s;
+}
+.warp-field.on { opacity: 1; }
+
+.warp-field .ws {
+  position: absolute; left: 50%; top: 50%;
+  width: 2px; height: 2px;
+  background: linear-gradient(90deg, transparent, #fff 70%, var(--signal));
+  transform-origin: 0 50%;
+  border-radius: 1px;
+  animation: warpStreak var(--dur, 2.4s) linear var(--dly, 0s) infinite;
+  opacity: 0;
+}
+@keyframes warpStreak {
+  0%   { transform: rotate(var(--a)) translateX(0) scaleX(0); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: rotate(var(--a)) translateX(120vmax) scaleX(60); opacity: 0; }
+}
+
+/* ── VIEW TOGGLE (bottom-left) ─────────────────────── */
+.view-toggle {
+  position: fixed; bottom: 24px; left: 24px;
+  z-index: var(--z-nav);
+  display: flex; gap: 4px; padding: 6px;
+  background: var(--hull-glass);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-pill);
+}
+.view-toggle button {
+  background: transparent; border: none; cursor: pointer;
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border-radius: var(--radius-pill);
+  color: var(--ink-3);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.view-toggle button svg { fill: currentColor; }
+.view-toggle button:hover { color: var(--ink); }
+.view-toggle button.active { background: var(--ink); color: var(--void); }
+
+/* ── LIST VIEW ─────────────────────────────────────── */
+.list-page {
+  position: absolute; inset: 0;
+  padding: 130px clamp(20px, 4vw, 56px) 110px;
+  overflow-y: auto;
+}
+.list-header {
+  max-width: 1320px; margin: 0 auto;
+  display: grid; grid-template-columns: 0.6fr 1.2fr;
+  gap: clamp(20px, 5vw, 60px);
+  align-items: end; margin-bottom: clamp(40px, 8vh, 80px);
+}
+.list-h1 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  line-height: 0.95; letter-spacing: -0.04em; color: var(--ink);
+}
+.list-h2 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  line-height: 0.95; letter-spacing: -0.04em; color: var(--ink-4);
+}
+.list-rows { max-width: 1320px; margin: 0 auto; }
+.list-year-block {
+  display: grid; grid-template-columns: 0.6fr 1.2fr;
+  gap: clamp(20px, 5vw, 60px);
+  padding: clamp(20px, 4vh, 32px) 0;
+  border-top: 1px solid var(--rule);
+}
+.list-year {
+  font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 500; color: var(--ink); letter-spacing: -0.03em;
+}
+.list-items { display: flex; flex-direction: column; }
+.list-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.2fr) minmax(0, 2fr) auto;
+  gap: clamp(16px, 3vw, 40px);
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none; color: inherit;
+  transition: padding var(--dur-fast), background var(--dur-fast);
+}
+.list-row:hover { padding-left: 14px; background: rgba(255,255,255,.02); }
+.list-row:hover .list-title { color: var(--signal); }
+.list-row:hover .list-view { color: var(--signal); }
+.list-title {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  color: var(--ink); letter-spacing: -0.01em;
+  transition: color var(--dur-fast);
+}
+.list-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+.list-chip {
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: var(--tr-mono); text-transform: uppercase;
+  color: var(--ink-2);
+  background: rgba(255,255,255,.06);
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--rule);
+}
+.list-view {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: var(--tr-mono-xl); text-transform: uppercase;
+  color: var(--ink-3);
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: color var(--dur-fast);
+}
+.list-view .arrow { transition: transform var(--dur-fast); }
+.list-row:hover .list-view .arrow { transform: translate(2px,-2px); }
+
+@media (max-width: 720px) {
+  .list-header, .list-year-block { grid-template-columns: 1fr; }
+  .list-row { grid-template-columns: 1fr; gap: 8px; }
+  .list-row:hover { padding-left: 0; }
 }
