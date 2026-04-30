@@ -1,0 +1,186 @@
+/* ============================================================
+   Spandan Patil — Design System (v2 · Spacecraft)
+   Dark starfield + Phantom-style curved tile grid + brutal sans
+   Source of truth: spandanpatil.com (s-panda-n/s-panda-n.github.io)
+                   + new spacecraft direction (2026)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root {
+  /* ── BASE PALETTE ─────────────────────────────────────── */
+  --void:        #05060A;     /* deepest black-blue, page bg                 */
+  --space:       #0A0E18;     /* surface a half-step up                      */
+  --hull:        #11161F;     /* card surface / hull plate                   */
+  --hull-2:      #1A2030;     /* hover surface                               */
+  --rule:        #232938;     /* hairline / border                           */
+  --rule-bright: #3A4258;     /* brighter hairline                           */
+
+  --ink:         #F2F4F8;     /* primary fg                                  */
+  --ink-2:       #C7CDD9;     /* secondary fg                                */
+  --ink-3:       #8990A3;     /* tertiary, mono caption                      */
+  --ink-4:       #5A6178;     /* disabled / quietest                         */
+
+  --signal:      #6CE7C9;     /* accent · teal/mint glow ("transponder")     */
+  --signal-2:    #00B894;     /* accent pressed                              */
+  --warn:        #F2C14E;     /* mission readout amber                       */
+  --burn:        #FF6B5C;     /* error / red giant                           */
+  --plasma:      #B38CFF;     /* deep magenta-violet for occasional accent   */
+
+  /* Stars + atmosphere */
+  --star-far:    rgba(255, 255, 255, 0.45);
+  --star-mid:    rgba(214, 234, 255, 0.70);
+  --star-near:   rgba(255, 255, 255, 0.95);
+  --earth-blue:  #2E6FCE;
+  --earth-cyan:  #4FB6E0;
+  --earth-rim:   rgba(150, 220, 255, 0.55);
+
+  /* Tints */
+  --signal-15:   rgba(108, 231, 201, 0.15);
+  --signal-30:   rgba(108, 231, 201, 0.30);
+  --signal-glow: rgba(108, 231, 201, 0.45);
+  --ink-on-hull: rgba(242, 244, 248, 0.88);
+  --hull-glass:  rgba(17, 22, 31, 0.72);
+
+  /* Semantic */
+  --bg:          var(--void);
+  --bg-card:     var(--hull);
+  --bg-card-hi:  var(--hull-2);
+  --fg:          var(--ink);
+  --fg-muted:    var(--ink-3);
+  --fg-quiet:    var(--ink-4);
+  --accent:      var(--signal);
+  --hairline:    var(--rule);
+
+  /* Gradients */
+  --grad-vignette: radial-gradient(ellipse at top, rgba(46, 111, 206, .12) 0%, transparent 55%),
+                   radial-gradient(ellipse at bottom, rgba(108, 231, 201, .06) 0%, transparent 60%);
+  --grad-hull:     linear-gradient(180deg, var(--hull) 0%, var(--space) 100%);
+  --grad-pill:     linear-gradient(180deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.02) 100%);
+  --grad-signal:   linear-gradient(135deg, var(--signal) 0%, var(--signal-2) 100%);
+  --grad-earth:    radial-gradient(circle at 35% 30%, var(--earth-cyan) 0%, var(--earth-blue) 38%, #0E2A55 70%, #061328 100%);
+
+  /* Type families */
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body:    'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-serif:   'Instrument Serif', Georgia, serif;            /* used only for italic accents */
+
+  /* Type scale */
+  --fs-hero:    clamp(3rem, 9vw, 7.5rem);
+  --fs-display: clamp(2rem, 5vw, 4rem);
+  --fs-h2:      2rem;
+  --fs-h3:      1.25rem;
+  --fs-lead:    1.125rem;
+  --fs-body:    1rem;
+  --fs-sm:      0.875rem;
+  --fs-xs:      0.75rem;
+  --fs-2xs:     0.6875rem;       /* 11px mono caption */
+
+  /* Tracking */
+  --tr-mono:     0.08em;
+  --tr-mono-lg:  0.14em;
+  --tr-mono-xl:  0.22em;          /* nav pill, mission readouts */
+
+  /* Spacing */
+  --container:  1320px;
+  --gutter:     clamp(1rem, 3vw, 2.5rem);
+  --space-1:    4px;
+  --space-2:    8px;
+  --space-3:    12px;
+  --space-4:    16px;
+  --space-5:    24px;
+  --space-6:    32px;
+  --space-7:    48px;
+  --space-8:    64px;
+  --space-9:    96px;
+  --space-10:   128px;
+
+  /* Borders + radius */
+  --radius-tile: 18px;          /* tile cards */
+  --radius-pill: 999px;         /* nav pill, buttons */
+  --radius-card: 14px;
+  --radius-chip: 6px;
+  --bw-hair:    1px;
+
+  /* Shadows + glows */
+  --shadow-tile:       0 24px 60px -20px rgba(0, 0, 0, 0.70);
+  --shadow-tile-hover: 0 32px 80px -16px rgba(0, 0, 0, 0.85), 0 0 0 1px var(--rule-bright);
+  --shadow-pill:       0 18px 40px -12px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255,255,255,.08);
+  --shadow-glow:       0 0 24px var(--signal-glow);
+  --shadow-glow-soft:  0 0 40px rgba(108, 231, 201, 0.25);
+
+  /* Motion */
+  --ease:           cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in:        cubic-bezier(0.55, 0, 0.55, 0.2);
+  --dur-fast:       180ms;
+  --dur-mid:        320ms;
+  --dur-slow:       620ms;
+
+  /* Z */
+  --z-stars: 1;
+  --z-content: 10;
+  --z-nav: 100;
+  --z-overlay: 200;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: var(--void); color: var(--fg); font-family: var(--font-body); }
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+}
+
+/* ── SEMANTIC ELEMENTS ─────────────────────────────────── */
+h1, .h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-hero);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+h2, .h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+h3, .h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+p, .p {
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+.lead { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink); }
+
+/* Italic accent — for occasional editorial pause inside brutal sans */
+em, .accent-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* Mono labels — every uppercase tick, time, status */
+.mono, .label, .meta, .readout {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tr-mono-xl);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+.readout { color: var(--signal); }
+
+/* Selection */
+::selection { background: var(--signal); color: var(--void); }
