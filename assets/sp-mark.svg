@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <text x="100" y="48" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="34" fill="#F2F4F8" letter-spacing="-1.5">SP</text>
+  <circle cx="148" cy="38" r="3" fill="#6CE7C9"></circle>
+  <text x="100" y="68" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#8990A3" letter-spacing="3">SPANDAN PATIL</text>
+</svg>
