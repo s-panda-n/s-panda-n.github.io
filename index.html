@@ -552,6 +552,8 @@ body[data-curve="false"] .cell { transform: none !important; }
 .art-net { background: radial-gradient(circle at 30% 40%, #1a2030 0%, #05060A 70%); }
 
 .cell:not(:has(.tile.project)) .tile-art { opacity: 0.5; }
+.cell:has(.tile.project) { overflow: visible; }
+.cell:has(.tile.project:hover) { z-index: 20; }
 
 /* ── ABOUT PAGE ─────────────────────────────────────── */
 .about-page {
@@ -2090,11 +2092,9 @@ function App() {
   const openProject = (p, idx) => {
     const meta = ALL_PROJECTS.find(m => m.title === p.title);
     if (meta && meta.href && meta.href !== '#') {
+      window.open(meta.href, '_blank'); // must be called synchronously
       setHyper(true);
-      setTimeout(() => {
-        setHyper(false);
-        window.open(meta.href, '_blank');
-      }, 800);
+      setTimeout(() => setHyper(false), 800);
     } else {
       showToast(p.title + ' · coming soon');
     }
