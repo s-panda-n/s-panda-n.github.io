@@ -370,9 +370,10 @@ body[data-curve="false"] .cell { transform: none !important; }
   text-decoration: none; color: inherit;
   transition: background var(--dur-fast);
 }
-.tile.project { cursor: pointer; }
-.tile.project:hover { background: var(--hull-2); }
-.tile.project:hover .tile-art { filter: brightness(1.15); }
+.tile.project { cursor: pointer; transition: background var(--dur-fast), transform var(--dur-mid), box-shadow var(--dur-mid); }
+.tile.project:hover { background: var(--hull-2); transform: translateY(-6px) scale(1.02); box-shadow: var(--shadow-tile-hover), 0 0 30px rgba(108,231,201,0.12); }
+.tile.project:hover .tile-art { filter: brightness(1.2); }
+.tile.project:hover .tile-view { color: var(--signal); letter-spacing: 0.28em; transition: color var(--dur-fast), letter-spacing var(--dur-mid); }
 
 .tile-art {
   position: absolute; inset: 0;
@@ -1806,13 +1807,13 @@ function AboutPage() {
             machine learning and industries that are overdue for a shake-up.</p>
 
             <p>Right now I'm working on projects across F1 race strategy, 
-            fashion-tech, quantitative finance, and healthcare — all with AI at 
+            fashion-tech, quantitative finance, and healthcare - all with AI at 
             the core. The finance side has my attention most lately: markets are 
             just another system to model, and I'm here for it.</p>
 
             <p>I'm making the jump from software engineering into quant and 
             fintech, and I'm genuinely excited about what sits at that edge. 
-            Also quietly building <em>a venture</em> 
+            Also quietly building something
             that's either a great idea or a great lesson.</p>
 
             <p>Into F1, finance rabbit holes, and having strong opinions about 
@@ -2087,10 +2088,10 @@ function App() {
   const showToast = (msg) => { setToast(msg); setTimeout(()=> setToast(''), 1800); };
 
   const openProject = (p, idx) => {
-    const meta = PROJECT_META.find(m => m.title === p.title);
+    const meta = ALL_PROJECTS.find(m => m.title === p.title);
     if (meta && meta.href && meta.href !== '#') {
       setHyper(true);
-      setTimeout(()=>{
+      setTimeout(() => {
         setHyper(false);
         window.open(meta.href, '_blank');
       }, 800);
