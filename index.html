@@ -2126,6 +2126,7 @@ function App() {
           <button className={page==='work'?'active':''} onClick={()=> setPage('work')}>Work</button>
           <button className={page==='about'?'active':''} onClick={()=> setPage('about')}>About</button>
           <button className={page==='dsrpt'?'active':''} onClick={()=> setPage('dsrpt')}>DSRPT</button>
+          <button onClick={()=> window.open('/quests.html','_blank','noopener')}>Quests ↗</button>
         </nav>
 
       <div className={'toast ' + (toast?'show':'')}>{toast}</div>
