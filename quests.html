@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Side Quests — Spandan Patil</title>
+<meta name="description" content="One hundred side quests. Spin, do one, cross it off."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Side Quest Dispatch — inherits spandanpatil.com design system
+   ============================================================ */
+:root{
+  --void:#05060A; --space:#0A0E18; --hull:#11161F; --hull-2:#1A2030;
+  --rule:#232938; --rule-bright:#3A4258;
+  --ink:#F2F4F8; --ink-2:#C7CDD9; --ink-3:#8990A3; --ink-4:#5A6178;
+  --signal:#6CE7C9; --signal-2:#00B894; --warn:#F2C14E; --burn:#FF6B5C; --plasma:#B38CFF;
+  --signal-15:rgba(108,231,201,.15); --signal-30:rgba(108,231,201,.30);
+  --signal-glow:rgba(108,231,201,.45); --hull-glass:rgba(17,22,31,.72);
+  --grad-vignette:radial-gradient(ellipse at top,rgba(46,111,206,.12) 0%,transparent 55%),
+                  radial-gradient(ellipse at bottom,rgba(108,231,201,.06) 0%,transparent 60%);
+  --font-display:'Space Grotesk','Inter',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --font-serif:'Instrument Serif',Georgia,serif;
+  --tr-mono:.08em; --tr-mono-lg:.14em; --tr-mono-xl:.22em;
+  --radius-tile:18px; --radius-pill:999px; --radius-card:14px; --radius-chip:6px;
+  --container:1180px;
+  --dur-fast:160ms;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--void); color:var(--ink);
+  font-family:var(--font-display); font-size:16px; line-height:1.55;
+  min-height:100vh; -webkit-font-smoothing:antialiased;
+}
+.vignette{position:fixed;inset:0;pointer-events:none;z-index:0;background:var(--grad-vignette)}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.75}
+.stars::before,.stars::after{content:'';position:absolute;inset:-50%;background-repeat:repeat}
+.stars::before{
+  background-image:
+    radial-gradient(1px 1px at 6% 12%,rgba(255,255,255,.45) 50%,transparent 51%),
+    radial-gradient(1px 1px at 28% 8%,rgba(255,255,255,.45) 50%,transparent 51%),
+    radial-gradient(1px 1px at 51% 14%,rgba(255,255,255,.45) 50%,transparent 51%),
+    radial-gradient(1px 1px at 76% 9%,rgba(255,255,255,.45) 50%,transparent 51%),
+    radial-gradient(1px 1px at 22% 56%,rgba(255,255,255,.45) 50%,transparent 51%),
+    radial-gradient(1px 1px at 56% 62%,rgba(255,255,255,.45) 50%,transparent 51%),
+    radial-gradient(1px 1px at 84% 65%,rgba(255,255,255,.45) 50%,transparent 51%),
+    radial-gradient(1px 1px at 13% 78%,rgba(255,255,255,.45) 50%,transparent 51%),
+    radial-gradient(1px 1px at 49% 92%,rgba(255,255,255,.45) 50%,transparent 51%),
+    radial-gradient(1px 1px at 81% 94%,rgba(255,255,255,.45) 50%,transparent 51%);
+  background-size:360px 280px; animation:drift 260s linear infinite;
+}
+.stars::after{
+  background-image:
+    radial-gradient(2px 2px at 18% 28%,rgba(255,255,255,.95) 50%,transparent 51%),
+    radial-gradient(2px 2px at 82% 18%,rgba(255,255,255,.95) 50%,transparent 51%),
+    radial-gradient(2px 2px at 40% 72%,rgba(255,255,255,.95) 50%,transparent 51%),
+    radial-gradient(1.6px 1.6px at 90% 90%,rgba(255,255,255,.95) 50%,transparent 51%);
+  background-size:820px 620px; animation:drift 140s linear infinite reverse;
+}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(-200px,-120px)}}
+
+.wrap{position:relative;z-index:1;max-width:var(--container);margin:0 auto;padding:28px clamp(16px,4vw,32px) 80px}
+
+/* ── header ─────────────────────────────────────────── */
+header.top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding-bottom:18px;border-bottom:1px solid var(--rule)}
+.mono{font-family:var(--font-mono);font-size:11px;letter-spacing:var(--tr-mono-xl);text-transform:uppercase;color:var(--ink-3)}
+h1{font-size:clamp(1.75rem,4vw,2.75rem);font-weight:600;letter-spacing:-.02em;margin:6px 0 4px;line-height:1.05}
+h1 em{font-family:var(--font-serif);font-style:italic;font-weight:400;color:var(--signal)}
+.sub{color:var(--ink-3);font-size:14px;margin:0}
+.back{font-family:var(--font-mono);font-size:11px;letter-spacing:var(--tr-mono-lg);text-transform:uppercase;
+  color:var(--ink-3);text-decoration:none;border:1px solid var(--rule);border-radius:var(--radius-pill);
+  padding:8px 16px;transition:all var(--dur-fast);white-space:nowrap}
+.back:hover{color:var(--ink);border-color:var(--rule-bright);background:var(--hull)}
+
+/* ── readout strip ──────────────────────────────────── */
+.readout{display:flex;gap:28px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--rule)}
+.readout div{display:flex;flex-direction:column;gap:2px}
+.readout .k{font-family:var(--font-mono);font-size:10px;letter-spacing:var(--tr-mono-xl);text-transform:uppercase;color:var(--ink-4)}
+.readout .v{font-family:var(--font-mono);font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.readout .v.sig{color:var(--signal)}
+
+/* ── tabs ───────────────────────────────────────────── */
+.tabs{display:flex;gap:4px;margin:22px 0 24px;padding:5px;background:var(--hull-glass);border:1px solid var(--rule);
+  border-radius:var(--radius-pill);width:max-content;max-width:100%;overflow:auto}
+.tabs button{background:transparent;border:none;cursor:pointer;color:var(--ink-3);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:var(--tr-mono-lg);text-transform:uppercase;
+  padding:9px 20px;border-radius:var(--radius-pill);transition:all var(--dur-fast);white-space:nowrap}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--void)}
+
+/* ── today banner ───────────────────────────────────── */
+.today{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  background:linear-gradient(180deg,rgba(108,231,201,.10),rgba(108,231,201,.02));
+  border:1px solid var(--signal-30);border-radius:var(--radius-card);padding:14px 18px;margin-bottom:24px}
+.today .lbl{font-family:var(--font-mono);font-size:10px;letter-spacing:var(--tr-mono-xl);text-transform:uppercase;color:var(--signal)}
+.today .qt{font-size:17px;font-weight:500;flex:1;min-width:220px}
+
+/* ── wheel ──────────────────────────────────────────── */
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:36px;align-items:start}
+@media(max-width:880px){.stage{grid-template-columns:1fr}}
+.wheelbox{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
+.dish{position:relative;width:min(100%,520px);aspect-ratio:1}
+.dish::after{content:'';position:absolute;inset:-6%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,transparent 62%,rgba(108,231,201,.05) 72%,transparent 78%)}
+#wheel{width:100%;height:100%;display:block;transform:rotate(0deg);
+  transition:transform 5s cubic-bezier(.13,.82,.14,1);
+  filter:drop-shadow(0 30px 60px rgba(0,0,0,.65))}
+.dish.armed #wheel{filter:drop-shadow(0 30px 60px rgba(0,0,0,.65)) drop-shadow(0 0 26px var(--signal-15))}
+.needle{position:absolute;top:-6px;left:50%;transform:translateX(-50%);z-index:3;
+  filter:drop-shadow(0 3px 8px rgba(0,0,0,.8))}
+.ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--rule);pointer-events:none}
+.ticks{position:absolute;inset:0;pointer-events:none}
+
+.spin{appearance:none;border:1px solid var(--signal-30);cursor:pointer;
+  background:linear-gradient(180deg,rgba(108,231,201,.16),rgba(108,231,201,.04));
+  color:var(--signal);font-family:var(--font-mono);font-size:13px;letter-spacing:var(--tr-mono-lg);
+  text-transform:uppercase;padding:16px 44px;border-radius:var(--radius-pill);
+  transition:all var(--dur-fast)}
+.spin:hover:not(:disabled){background:var(--signal);color:var(--void);border-color:var(--signal);
+  box-shadow:0 0 30px var(--signal-15)}
+.spin:disabled{opacity:.4;cursor:not-allowed}
+.hint{font-family:var(--font-mono);font-size:11px;letter-spacing:var(--tr-mono);color:var(--ink-4);text-align:center}
+
+/* ── result card ────────────────────────────────────── */
+.result{background:var(--hull);border:1px solid var(--rule);border-radius:var(--radius-tile);
+  padding:24px;position:sticky;top:24px}
+.result.hit{border-color:var(--signal-30);box-shadow:0 0 40px -12px var(--signal-15)}
+.result .eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:var(--tr-mono-xl);
+  text-transform:uppercase;color:var(--ink-4);margin-bottom:14px}
+.result .quest{font-size:22px;font-weight:500;line-height:1.3;letter-spacing:-.01em;margin:0 0 16px}
+.result .empty{color:var(--ink-4);font-size:15px;line-height:1.6}
+.chip{display:inline-block;font-family:var(--font-mono);font-size:10px;letter-spacing:var(--tr-mono-lg);
+  text-transform:uppercase;padding:4px 10px;border-radius:var(--radius-chip);
+  border:1px solid var(--rule-bright);color:var(--ink-3)}
+.acts{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.btn{appearance:none;cursor:pointer;font-family:var(--font-mono);font-size:11px;
+  letter-spacing:var(--tr-mono-lg);text-transform:uppercase;padding:12px 18px;
+  border-radius:var(--radius-pill);border:1px solid var(--rule);background:var(--hull-2);
+  color:var(--ink-2);transition:all var(--dur-fast);text-align:center}
+.btn:hover{border-color:var(--rule-bright);color:var(--ink);background:#20273a}
+.btn.primary{background:var(--signal);border-color:var(--signal);color:var(--void);font-weight:500}
+.btn.primary:hover{background:#8af2d8;border-color:#8af2d8}
+.btn.danger:hover{border-color:var(--burn);color:var(--burn)}
+.btn.sm{padding:7px 12px;font-size:10px}
+
+/* ── list + log ─────────────────────────────────────── */
+.panel{background:var(--hull);border:1px solid var(--rule);border-radius:var(--radius-tile);padding:22px}
+.panel + .panel{margin-top:18px}
+.panel h2{font-family:var(--font-mono);font-size:11px;letter-spacing:var(--tr-mono-xl);text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 16px;font-weight:400}
+.addrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+input[type=text],select{font-family:var(--font-display);font-size:14px;color:var(--ink);
+  background:var(--space);border:1px solid var(--rule);border-radius:var(--radius-pill);
+  padding:11px 16px;outline:none;transition:border-color var(--dur-fast)}
+input[type=text]{flex:1;min-width:200px}
+input[type=text]:focus,select:focus{border-color:var(--signal-30)}
+input[type=text]::placeholder{color:var(--ink-4)}
+select{font-family:var(--font-mono);font-size:11px;letter-spacing:var(--tr-mono);text-transform:uppercase;cursor:pointer}
+option{background:var(--space);color:var(--ink)}
+
+ul.qlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+ul.qlist li{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--rule)}
+ul.qlist li:last-child{border-bottom:none}
+ul.qlist .num{font-family:var(--font-mono);font-size:11px;color:var(--ink-4);width:30px;flex-shrink:0;
+  font-variant-numeric:tabular-nums}
+ul.qlist .txt{flex:1;font-size:15px;min-width:0}
+ul.qlist .txt.struck{color:var(--ink-4);text-decoration:line-through}
+ul.qlist .when{font-family:var(--font-mono);font-size:11px;color:var(--signal);white-space:nowrap}
+ul.qlist .rm{background:none;border:none;color:var(--ink-4);cursor:pointer;font-family:var(--font-mono);
+  font-size:15px;padding:4px 8px;border-radius:var(--radius-chip);line-height:1;transition:all var(--dur-fast)}
+ul.qlist .rm:hover{color:var(--burn);background:rgba(255,107,92,.1)}
+ul.qlist .rm.undo:hover{color:var(--signal);background:var(--signal-15)}
+.filterbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.fchip{font-family:var(--font-mono);font-size:10px;letter-spacing:var(--tr-mono);text-transform:uppercase;
+  padding:6px 12px;border-radius:var(--radius-pill);border:1px solid var(--rule);background:transparent;
+  color:var(--ink-3);cursor:pointer;transition:all var(--dur-fast)}
+.fchip:hover{border-color:var(--rule-bright);color:var(--ink)}
+.fchip[aria-pressed="true"]{background:var(--signal-15);border-color:var(--signal-30);color:var(--signal)}
+.empty-state{color:var(--ink-4);font-size:14px;padding:8px 4px}
+.datarow{display:flex;gap:8px;flex-wrap:wrap}
+.note{color:var(--ink-4);font-size:13px;line-height:1.65;margin:14px 0 0}
+.note code{font-family:var(--font-mono);font-size:12px;color:var(--ink-3);background:var(--space);
+  padding:2px 6px;border-radius:4px}
+
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);z-index:50;
+  background:var(--hull-2);border:1px solid var(--rule-bright);border-radius:var(--radius-pill);
+  padding:12px 24px;font-family:var(--font-mono);font-size:11px;letter-spacing:var(--tr-mono-lg);
+  text-transform:uppercase;color:var(--ink);opacity:0;pointer-events:none;transition:all 240ms}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+.hidden{display:none !important}
+@media (prefers-reduced-motion:reduce){
+  #wheel{transition-duration:600ms}
+  .stars::before,.stars::after{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="vignette"></div>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="mono">Dispatch · 100 side quests</div>
+      <h1>Spin for <em>today</em></h1>
+      <p class="sub">One quest a day. Do it, cross it off, never see it again.</p>
+    </div>
+    <a class="back" href="/">← spandanpatil.com</a>
+  </header>
+
+  <div class="readout">
+    <div><span class="k">Remaining</span><span class="v sig" id="rd-left">—</span></div>
+    <div><span class="k">Completed</span><span class="v" id="rd-done">—</span></div>
+    <div><span class="k">Retired</span><span class="v" id="rd-ret">—</span></div>
+    <div><span class="k">Streak</span><span class="v" id="rd-streak">—</span></div>
+    <div><span class="k">Today</span><span class="v" id="rd-date">—</span></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-wheel" aria-selected="true">Wheel</button>
+    <button role="tab" id="tab-list" aria-selected="false">The list</button>
+    <button role="tab" id="tab-log" aria-selected="false">Logbook</button>
+    <button role="tab" id="tab-data" aria-selected="false">Data</button>
+  </div>
+
+  <!-- WHEEL -->
+  <section id="view-wheel">
+    <div class="today hidden" id="today-banner">
+      <span class="lbl">Locked in for today</span>
+      <span class="qt" id="today-text"></span>
+      <button class="btn sm" id="btn-respin">Spin again anyway</button>
+    </div>
+
+    <div class="stage">
+      <div class="wheelbox">
+        <div class="dish" id="dish">
+          <svg class="needle" width="34" height="40" viewBox="0 0 34 40" aria-hidden="true">
+            <path d="M17 38 L4 6 Q17 13 30 6 Z" fill="#6CE7C9"/>
+            <circle cx="17" cy="9" r="3.5" fill="#05060A"/>
+          </svg>
+          <svg id="wheel" viewBox="0 0 400 400" role="img" aria-label="Side quest wheel"></svg>
+          <div class="ring"></div>
+        </div>
+        <button class="spin" id="btn-spin">Spin the wheel</button>
+        <p class="hint" id="spin-hint"></p>
+      </div>
+
+      <aside class="result" id="result">
+        <div class="eyebrow" id="res-eyebrow">Awaiting spin</div>
+        <p class="quest" id="res-quest">Ready when you are.</p>
+        <div id="res-chip-wrap"></div>
+        <div class="acts hidden" id="res-acts">
+          <button class="btn primary" id="btn-done">I did it</button>
+          <button class="btn" id="btn-later">Not today, put it back</button>
+          <button class="btn danger" id="btn-retire">Retire this one</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- LIST -->
+  <section id="view-list" class="hidden">
+    <div class="panel">
+      <h2>Add a quest</h2>
+      <div class="addrow">
+        <input type="text" id="add-text" placeholder="Something you would not do on a normal Tuesday" maxlength="120"/>
+        <select id="add-cat"></select>
+        <button class="btn primary" id="btn-add">Add</button>
+      </div>
+      <h2 id="list-heading">In the wheel</h2>
+      <div class="filterbar" id="filters"></div>
+      <ul class="qlist" id="active-list"></ul>
+    </div>
+    <div class="panel">
+      <h2>Retired <span id="ret-count" class="mono"></span></h2>
+      <ul class="qlist" id="retired-list"></ul>
+    </div>
+  </section>
+
+  <!-- LOG -->
+  <section id="view-log" class="hidden">
+    <div class="panel">
+      <h2>Done, with dates</h2>
+      <ul class="qlist" id="done-list"></ul>
+    </div>
+  </section>
+
+  <!-- DATA -->
+  <section id="view-data" class="hidden">
+    <div class="panel">
+      <h2>Backup and restore</h2>
+      <p class="note" style="margin-top:0">
+        Everything is saved in this browser under <code>sp.sidequests.v1</code>, so your edits and
+        crossed-off quests stay put between visits. They do not follow you to a different browser or
+        phone, so export a file whenever you have made changes worth keeping.
+      </p>
+      <div class="datarow" style="margin-top:16px">
+        <button class="btn" id="btn-export">Export JSON</button>
+        <button class="btn" id="btn-import">Import JSON</button>
+        <button class="btn" id="btn-copy">Copy list to clipboard</button>
+        <button class="btn danger" id="btn-reset">Reset everything</button>
+      </div>
+      <input type="file" id="file-input" accept="application/json" class="hidden"/>
+      <p class="note">
+        To change the starting 100 permanently, edit the <code>SEED</code> array near the top of the
+        script in <code>quests.html</code>. Anything you add there that is not already in your saved
+        state gets folded into the wheel next time you load the page, so the file and your browser
+        stay in sync without wiping your progress.
+      </p>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   SEED — edit this list freely. New entries are merged in on
+   load; deleting a line here will not remove it from a browser
+   that already saved it (retire it in the UI instead).
+   ============================================================ */
+const CATS = ['CITY','CULTURE','MAKE','BODY','MIND','PEOPLE','WHIM'];
+
+const SEED = [
+  ['Ride the Roosevelt Island tram at sunset','CITY'],
+  ['Take the Staten Island ferry after dark, both ways','CITY'],
+  ['Walk the High Line end to end at 7am','CITY'],
+  ['Cross the Brooklyn Bridge on foot from your door','CITY'],
+  ['Get off at a subway stop you have never used','CITY'],
+  ['Spend a weekday morning in Green-Wood Cemetery','CITY'],
+  ['Find the best chai in Jackson Heights','CITY'],
+  ['Sit in the NYPL Rose Reading Room for two hours','CITY'],
+  ['Take the A train to Rockaway and get in the water','CITY'],
+  ['Bike the Hudson Greenway up to the GW Bridge','CITY'],
+  ['Eat at the oldest restaurant you can find','CITY'],
+  ['Do an architecture walk through the Financial District','CITY'],
+  ['Find the smallest park in Manhattan and sit in it','CITY'],
+  ['Go to Coney Island in the off season','CITY'],
+  ['Visit a neighborhood you have never set foot in','CITY'],
+  ['Wander the Bronx Botanical Garden alone','CITY'],
+  ['Rank three dollar slices in one afternoon','CITY'],
+  ['Find a new rooftop and stay for the sunset','CITY'],
+  ['Order at a place with no English on the sign','CITY'],
+  ['Walk the whole way home from the office','CITY'],
+  ['Cook only what you buy at a Sunday farmers market','CITY'],
+  ['Stay at the Cloisters until they close','CITY'],
+  ['Catch a basement jazz set in the Village','CITY'],
+  ['Learn who lived on your block a hundred years ago','CITY'],
+
+  ['Spend a full hour with one painting at the Met','CULTURE'],
+  ['Enter a museum you have walked past for months','CULTURE'],
+  ['Read a book in one sitting','CULTURE'],
+  ['Buy whatever is on the staff picks shelf','CULTURE'],
+  ['Read a biography of someone you disagree with','CULTURE'],
+  ['Watch a film with no subtitles and guess the plot','CULTURE'],
+  ['Go to the Tenement Museum','CULTURE'],
+  ['Sit through a poetry reading','CULTURE'],
+  ['See an opera from the cheapest seat in the house','CULTURE'],
+  ['Do MoMA on a free night, one wing only','CULTURE'],
+  ['Read a book of poetry cover to cover','CULTURE'],
+  ['Attend a lecture on something you know nothing about','CULTURE'],
+  ['Crash a Chelsea gallery opening on a Thursday','CULTURE'],
+  ['Hunt down a first edition of a book you love','CULTURE'],
+  ['Listen to one album start to finish, no second screen','CULTURE'],
+  ['Rewatch a full F1 season opener from before you watched','CULTURE'],
+  ['Go to the Noguchi Museum in Queens','CULTURE'],
+  ['See a documentary in a small theater','CULTURE'],
+  ['Start a museum at the last room and walk backwards','CULTURE'],
+
+  ['Publish 1000 words on Parallel Thoughts','MAKE'],
+  ['Cook something from your mother kitchen, from memory','MAKE'],
+  ['Build something small and useless in one weekend','MAKE'],
+  ['Learn to make one cocktail properly','MAKE'],
+  ['Write a letter by hand and actually mail it','MAKE'],
+  ['Take 36 photos in a day and keep six','MAKE'],
+  ['Learn one song on an instrument you cannot play','MAKE'],
+  ['Cook a cuisine you have never attempted','MAKE'],
+  ['Make bread from scratch','MAKE'],
+  ['Write a short story about a stranger you saw today','MAKE'],
+  ['Sketch in a park, badly, on purpose','MAKE'],
+  ['Ship a side project in a single sitting','MAKE'],
+
+  ['Run somewhere you would normally take the train','BODY'],
+  ['Try a class you find slightly embarrassing','BODY'],
+  ['Swim laps at a public pool','BODY'],
+  ['Walk 20,000 steps with no destination','BODY'],
+  ['Hike something within two hours of the city','BODY'],
+  ['Take a boxing class','BODY'],
+  ['Bike over a bridge you have only driven across','BODY'],
+  ['Stretch twenty minutes a day for a week','BODY'],
+  ['Climb at a bouldering gym','BODY'],
+  ['Play a sport you last played as a kid','BODY'],
+  ['Learn one thing your body currently cannot do','BODY'],
+
+  ['Sit thirty minutes in silence before sunrise','MIND'],
+  ['Go a full day with no phone','MIND'],
+  ['Sit quietly in a place of worship that is not yours','MIND'],
+  ['Write down every thought for one hour','MIND'],
+  ['Eat dinner alone with no screen','MIND'],
+  ['Put the last five years on one page','MIND'],
+  ['Learn twenty words in a language you want to speak','MIND'],
+  ['Take a week off from opinions online','MIND'],
+  ['Reread something that shaped you at sixteen','MIND'],
+  ['Walk one full avenue as a meditation','MIND'],
+  ['Write the letter you will never send','MIND'],
+  ['Take yourself out to something you would never pick','MIND'],
+  ['Write down what you want your thirties to look like','MIND'],
+
+  ['Call someone you have not spoken to in a year','PEOPLE'],
+  ['Ask a stranger what they are reading','PEOPLE'],
+  ['Cook dinner for three people who have never met','PEOPLE'],
+  ['Go to an event alone and stay two hours','PEOPLE'],
+  ['Take a friend somewhere they have never been','PEOPLE'],
+  ['Ask someone over sixty about their twenties','PEOPLE'],
+  ['Give five people a real compliment in one day','PEOPLE'],
+  ['Host something small in your apartment','PEOPLE'],
+  ['Message three old classmates and actually catch up','PEOPLE'],
+  ['Say yes to the next invitation you would decline','PEOPLE'],
+  ['Ask someone you admire for thirty minutes of advice','PEOPLE'],
+
+  ['Order the strangest thing on the menu','WHIM'],
+  ['Learn a card trick','WHIM'],
+  ['Wear an outfit that is entirely out of character','WHIM'],
+  ['Spend twenty dollars as generously as possible','WHIM'],
+  ['Buy a ticket to something happening the same day','WHIM'],
+  ['Wake at 4am for a live race, then go back to sleep','WHIM'],
+  ['Leave a note in a library book for the next reader','WHIM'],
+  ['Follow a street until it ends','WHIM'],
+  ['Let someone else order for you','WHIM'],
+  ['Flip a coin at every corner for one hour','WHIM']
+];
+
+/* ── storage ─────────────────────────────────────────── */
+const KEY = 'sp.sidequests.v1';
+let memoryFallback = null;
+
+function loadRaw(){
+  try{ return window.localStorage.getItem(KEY); }
+  catch(e){ return memoryFallback; }
+}
+function saveRaw(str){
+  try{ window.localStorage.setItem(KEY, str); }
+  catch(e){ memoryFallback = str; }
+}
+
+const slug = t => t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,48);
+const today = () => new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD, local
+const fmt = d => {
+  const [y,m,dd] = d.split('-').map(Number);
+  return new Date(y, m-1, dd).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+};
+
+function seedState(){
+  return {
+    version:1,
+    active: SEED.map(([text,cat])=>({id:slug(text),text,cat})),
+    done:[], retired:[], lastDate:null, lastId:null
+  };
+}
+
+function load(){
+  const raw = loadRaw();
+  if(!raw) return seedState();
+  let s;
+  try{ s = JSON.parse(raw); }catch(e){ return seedState(); }
+  s.active = s.active || []; s.done = s.done || []; s.retired = s.retired || [];
+  // fold in any new SEED entries added to the file since last visit
+  const seen = new Set([...s.active, ...s.done, ...s.retired].map(q=>q.id));
+  SEED.forEach(([text,cat])=>{
+    const id = slug(text);
+    if(!seen.has(id)) s.active.push({id,text,cat});
+  });
+  return s;
+}
+
+let state = load();
+function save(){ saveRaw(JSON.stringify(state)); }
+
+/* ── helpers ─────────────────────────────────────────── */
+const $ = id => document.getElementById(id);
+let toastTimer;
+function toast(msg){
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function streak(){
+  const days = [...new Set(state.done.map(q=>q.date))].sort().reverse();
+  if(!days.length) return 0;
+  const d = new Date(); let n = 0;
+  const iso = x => x.toLocaleDateString('en-CA');
+  if(days[0] !== iso(d)){
+    d.setDate(d.getDate()-1);
+    if(days[0] !== iso(d)) return 0;
+  }
+  for(const day of days){
+    if(day === iso(d)){ n++; d.setDate(d.getDate()-1); } else break;
+  }
+  return n;
+}
+
+/* ── wheel rendering ─────────────────────────────────── */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const MAX_SLICES = 14;
+const CX = 200, CY = 200, R = 186;
+let slices = [];        // the sampled quests currently drawn
+let rotation = 0;       // accumulated degrees
+let spinning = false;
+let current = null;     // the quest showing in the result card
+
+function sample(){
+  const pool = state.active.slice();
+  for(let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  return pool.slice(0, Math.min(MAX_SLICES, pool.length));
+}
+const trunc = (t,n) => t.length > n ? t.slice(0,n-1).trimEnd()+'…' : t;
+function arc(i,n){
+  const a = 360/n, s = (i*a-90)*Math.PI/180, e = ((i+1)*a-90)*Math.PI/180;
+  const x1 = CX+R*Math.cos(s), y1 = CY+R*Math.sin(s);
+  const x2 = CX+R*Math.cos(e), y2 = CY+R*Math.sin(e);
+  return `M ${CX} ${CY} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${R} ${R} 0 ${a>180?1:0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z`;
+}
+function drawWheel(winnerIdx){
+  const svg = $('wheel');
+  svg.innerHTML = '';
+  const n = slices.length;
+  if(!n){
+    const t = document.createElementNS(SVG_NS,'circle');
+    t.setAttribute('cx',CX); t.setAttribute('cy',CY); t.setAttribute('r',R);
+    t.setAttribute('fill','#0A0E18'); t.setAttribute('stroke','#232938');
+    svg.appendChild(t);
+    return;
+  }
+  const a = 360/n;
+  slices.forEach((q,i)=>{
+    const p = document.createElementNS(SVG_NS,'path');
+    p.setAttribute('d', arc(i,n));
+    const hit = winnerIdx === i;
+    p.setAttribute('fill', hit ? 'rgba(108,231,201,.22)' : (i%2 ? '#11161F' : '#0A0E18'));
+    p.setAttribute('stroke', hit ? '#6CE7C9' : '#232938');
+    p.setAttribute('stroke-width', hit ? '1.6' : '1');
+    svg.appendChild(p);
+
+    const mid = (i+0.5)*a - 90;
+    const flip = mid > 90 && mid < 270;
+    const t = document.createElementNS(SVG_NS,'text');
+    t.setAttribute('transform',
+      `rotate(${mid.toFixed(2)} ${CX} ${CY}) translate(${CX+R-14} ${CY})` + (flip?' rotate(180)':''));
+    t.setAttribute('text-anchor', flip ? 'start' : 'end');
+    t.setAttribute('dominant-baseline','middle');
+    t.setAttribute('fill', hit ? '#6CE7C9' : '#C7CDD9');
+    t.setAttribute('font-family',"'Space Grotesk',sans-serif");
+    t.setAttribute('font-size', n > 11 ? '10.5' : '12');
+    t.setAttribute('font-weight', hit ? '600' : '400');
+    t.textContent = trunc(q.text, n > 11 ? 26 : 30);
+    svg.appendChild(t);
+  });
+  // hub
+  const hub = document.createElementNS(SVG_NS,'circle');
+  hub.setAttribute('cx',CX); hub.setAttribute('cy',CY); hub.setAttribute('r','44');
+  hub.setAttribute('fill','#05060A'); hub.setAttribute('stroke','#232938');
+  svg.appendChild(hub);
+  const big = document.createElementNS(SVG_NS,'text');
+  big.setAttribute('x',CX); big.setAttribute('y',CY-3);
+  big.setAttribute('text-anchor','middle'); big.setAttribute('dominant-baseline','middle');
+  big.setAttribute('fill','#6CE7C9'); big.setAttribute('font-family',"'JetBrains Mono',monospace");
+  big.setAttribute('font-size','22'); big.textContent = state.active.length;
+  svg.appendChild(big);
+  const cap = document.createElementNS(SVG_NS,'text');
+  cap.setAttribute('x',CX); cap.setAttribute('y',CY+16);
+  cap.setAttribute('text-anchor','middle'); cap.setAttribute('fill','#5A6178');
+  cap.setAttribute('font-family',"'JetBrains Mono',monospace");
+  cap.setAttribute('font-size','8'); cap.setAttribute('letter-spacing','2');
+  cap.textContent = 'LEFT'; svg.appendChild(cap);
+}
+
+/* ── spin ────────────────────────────────────────────── */
+function spin(){
+  if(spinning || !state.active.length) return;
+  spinning = true;
+  $('btn-spin').disabled = true;
+  $('dish').classList.add('armed');
+  $('res-acts').classList.add('hidden');
+  $('result').classList.remove('hit');
+  $('res-eyebrow').textContent = 'Spinning';
+  $('res-quest').textContent = 'Hold on.';
+  $('res-chip-wrap').innerHTML = '';
+
+  slices = sample();
+  drawWheel(null);
+  const n = slices.length;
+  const idx = Math.floor(Math.random()*n);
+  const a = 360/n;
+  const jitter = (Math.random()-0.5) * a * 0.62;
+  // land the middle of slice idx under the pointer at 12 o'clock
+  const desired = (((360 - (idx+0.5)*a + jitter) % 360) + 360) % 360;
+  rotation = Math.ceil(rotation/360)*360 + 360*5 + desired;
+  $('wheel').style.transform = `rotate(${rotation}deg)`;
+
+  setTimeout(()=>{
+    spinning = false;
+    $('btn-spin').disabled = false;
+    $('dish').classList.remove('armed');
+    drawWheel(idx);
+    current = slices[idx];
+    showResult(current);
+    state.lastDate = today(); state.lastId = current.id; save();
+    renderTodayBanner();
+  }, 5100);
+}
+
+function showResult(q){
+  $('result').classList.add('hit');
+  $('res-eyebrow').textContent = 'Your quest';
+  $('res-quest').textContent = q.text;
+  $('res-chip-wrap').innerHTML = `<span class="chip">${q.cat}</span>`;
+  $('res-acts').classList.remove('hidden');
+}
+
+/* ── result actions ──────────────────────────────────── */
+function removeActive(id){ state.active = state.active.filter(q=>q.id!==id); }
+function clearResult(msg){
+  current = null;
+  $('res-acts').classList.add('hidden');
+  $('result').classList.remove('hit');
+  $('res-eyebrow').textContent = 'Awaiting spin';
+  $('res-quest').textContent = msg;
+  $('res-chip-wrap').innerHTML = '';
+  slices = sample(); drawWheel(null);
+  renderAll();
+}
+
+$('btn-done').onclick = ()=>{
+  if(!current) return;
+  const q = current;
+  removeActive(q.id);
+  state.done.unshift({...q, date: today()});
+  save(); toast('Crossed off. Nice.');
+  clearResult('Done. Come back tomorrow.');
+};
+$('btn-later').onclick = ()=>{
+  if(!current) return;
+  state.lastDate = null; state.lastId = null; save();
+  toast('Back in the wheel');
+  clearResult('Back in the pile. Spin again whenever.');
+  renderTodayBanner();
+};
+$('btn-retire').onclick = ()=>{
+  if(!current) return;
+  const q = current;
+  removeActive(q.id);
+  state.retired.unshift(q);
+  state.lastDate = null; state.lastId = null;
+  save(); toast('Retired');
+  clearResult('Gone for good. Spin again.');
+  renderTodayBanner();
+};
+$('btn-spin').onclick = spin;
+$('btn-respin').onclick = ()=>{ state.lastDate=null; state.lastId=null; save(); renderTodayBanner(); spin(); };
+
+/* ── today banner ────────────────────────────────────── */
+function renderTodayBanner(){
+  const b = $('today-banner');
+  if(state.lastDate === today() && state.lastId){
+    const q = state.active.find(x=>x.id===state.lastId) || state.done.find(x=>x.id===state.lastId);
+    if(q){
+      $('today-text').textContent = q.text;
+      b.classList.remove('hidden');
+      $('btn-spin').disabled = true;
+      $('spin-hint').textContent = 'Already spun today';
+      return;
+    }
+  }
+  b.classList.add('hidden');
+  $('btn-spin').disabled = spinning || !state.active.length;
+  $('spin-hint').textContent = state.active.length
+    ? `${Math.min(MAX_SLICES, state.active.length)} of ${state.active.length} shown, drawn fresh every spin`
+    : 'Nothing left. Add some quests in the list tab.';
+}
+
+/* ── list / log rendering ────────────────────────────── */
+let filter = 'ALL';
+function renderFilters(){
+  const wrap = $('filters');
+  wrap.innerHTML = '';
+  ['ALL',...CATS].forEach(c=>{
+    const b = document.createElement('button');
+    b.className='fchip'; b.textContent = c==='ALL' ? 'All' : c;
+    b.setAttribute('aria-pressed', filter===c);
+    b.onclick = ()=>{ filter=c; renderFilters(); renderList(); };
+    wrap.appendChild(b);
+  });
+}
+function renderList(){
+  const ul = $('active-list'); ul.innerHTML='';
+  const items = state.active.filter(q=>filter==='ALL'||q.cat===filter);
+  $('list-heading').textContent = `In the wheel (${state.active.length})`;
+  if(!items.length){
+    ul.innerHTML = '<li class="empty-state">Nothing here yet.</li>';
+  } else {
+    items.forEach((q,i)=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="num">${String(i+1).padStart(3,'0')}</span>
+        <span class="txt">${escapeHtml(q.text)}</span>
+        <span class="chip">${q.cat}</span>`;
+      const rm = document.createElement('button');
+      rm.className='rm'; rm.textContent='×'; rm.title='Retire this quest';
+      rm.setAttribute('aria-label',`Retire: ${q.text}`);
+      rm.onclick = ()=>{
+        removeActive(q.id); state.retired.unshift(q); save(); toast('Retired'); renderAll();
+      };
+      li.appendChild(rm); ul.appendChild(li);
+    });
+  }
+
+  const rl = $('retired-list'); rl.innerHTML='';
+  $('ret-count').textContent = state.retired.length ? `(${state.retired.length})` : '';
+  if(!state.retired.length){
+    rl.innerHTML = '<li class="empty-state">Nothing retired. Everything is still in play.</li>';
+  } else {
+    state.retired.forEach(q=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="txt struck">${escapeHtml(q.text)}</span>`;
+      const un = document.createElement('button');
+      un.className='rm undo'; un.textContent='↺'; un.title='Put it back';
+      un.setAttribute('aria-label',`Restore: ${q.text}`);
+      un.onclick = ()=>{
+        state.retired = state.retired.filter(x=>x.id!==q.id);
+        state.active.push(q); save(); toast('Back in the wheel'); renderAll();
+      };
+      li.appendChild(un); rl.appendChild(li);
+    });
+  }
+}
+function renderLog(){
+  const ul = $('done-list'); ul.innerHTML='';
+  if(!state.done.length){
+    ul.innerHTML = '<li class="empty-state">Nothing yet. Spin the wheel and go do something.</li>';
+    return;
+  }
+  state.done.forEach((q,i)=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="num">${String(state.done.length-i).padStart(3,'0')}</span>
+      <span class="txt">${escapeHtml(q.text)}</span>
+      <span class="when">${fmt(q.date)}</span>`;
+    const un = document.createElement('button');
+    un.className='rm undo'; un.textContent='↺'; un.title='Put it back in the wheel';
+    un.setAttribute('aria-label',`Undo: ${q.text}`);
+    un.onclick = ()=>{
+      state.done = state.done.filter(x=>x.id!==q.id);
+      state.active.push({id:q.id,text:q.text,cat:q.cat});
+      if(state.lastId===q.id){ state.lastDate=null; state.lastId=null; }
+      save(); toast('Back in the wheel'); renderAll();
+    };
+    li.appendChild(un); ul.appendChild(li);
+  });
+}
+function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function renderReadout(){
+  $('rd-left').textContent = state.active.length;
+  $('rd-done').textContent = state.done.length;
+  $('rd-ret').textContent = state.retired.length;
+  const s = streak();
+  $('rd-streak').textContent = s === 1 ? '1 day' : s + ' days';
+  $('rd-date').textContent = fmt(today());
+}
+function renderAll(){
+  renderReadout(); renderList(); renderLog(); renderTodayBanner();
+  if(!spinning && !current){ slices = sample(); drawWheel(null); }
+  else drawWheel(null);
+}
+
+/* ── add ─────────────────────────────────────────────── */
+CATS.forEach(c=>{
+  const o = document.createElement('option'); o.value=c; o.textContent=c; $('add-cat').appendChild(o);
+});
+function addQuest(){
+  const text = $('add-text').value.trim();
+  if(!text){ toast('Type something first'); return; }
+  const id = slug(text);
+  if([...state.active,...state.done,...state.retired].some(q=>q.id===id)){
+    toast('Already on the list'); return;
+  }
+  state.active.push({id, text, cat: $('add-cat').value});
+  save(); $('add-text').value=''; toast('Added'); renderAll();
+}
+$('btn-add').onclick = addQuest;
+$('add-text').addEventListener('keydown', e=>{ if(e.key==='Enter') addQuest(); });
+
+/* ── data ────────────────────────────────────────────── */
+$('btn-export').onclick = ()=>{
+  const blob = new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `side-quests-${today()}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('Exported');
+};
+$('btn-import').onclick = ()=> $('file-input').click();
+$('file-input').onchange = e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ()=>{
+    try{
+      const s = JSON.parse(r.result);
+      if(!Array.isArray(s.active)) throw new Error('bad shape');
+      state = s; save(); renderAll(); toast('Imported');
+    }catch(err){ toast('That file did not parse'); }
+  };
+  r.readAsText(f); e.target.value='';
+};
+$('btn-copy').onclick = async ()=>{
+  const txt = state.active.map(q=>`  ['${q.text.replace(/'/g,"\\'")}','${q.cat}'],`).join('\n');
+  try{ await navigator.clipboard.writeText(txt); toast('Copied as SEED lines'); }
+  catch(e){ toast('Clipboard blocked, use export instead'); }
+};
+$('btn-reset').onclick = ()=>{
+  if(!confirm('Reset to the original 100 and erase your log? This cannot be undone.')) return;
+  state = seedState(); save(); current=null; renderAll(); toast('Reset');
+};
+
+/* ── tabs ────────────────────────────────────────────── */
+const views = {wheel:'view-wheel', list:'view-list', log:'view-log', data:'view-data'};
+Object.keys(views).forEach(k=>{
+  $('tab-'+k).onclick = ()=>{
+    Object.keys(views).forEach(j=>{
+      $('view-'+j).classList.toggle('hidden', j!==k);
+      $('tab-'+j).setAttribute('aria-selected', String(j===k));
+    });
+  };
+});
+
+/* ── boot ────────────────────────────────────────────── */
+renderFilters();
+slices = sample();
+drawWheel(null);
+renderAll();
+if(state.lastDate === today() && state.lastId){
+  const q = state.active.find(x=>x.id===state.lastId);
+  if(q){ current = q; showResult(q); }
+}
+</script>
+</body>
+</html>
